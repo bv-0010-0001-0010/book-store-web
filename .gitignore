@@ -15,3 +15,10 @@ config.local.php
 # User uploads folder
 uploaded_img
 !uploaded_img/.gitkeep
+
+# Certs / keys
+path/*.pem
+*.pem
+*.crt
+*.key
+

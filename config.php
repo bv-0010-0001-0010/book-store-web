@@ -26,13 +26,40 @@ foreach ($config as $k => $v) {
   }
 }
 
-$conn = mysqli_connect(
-  $config['DB_HOST'],
-  $config['DB_USER'],
-  $config['DB_PASS'],
-  $config['DB_NAME'],
-  (int)$config['DB_PORT']
+// --- CONNECT (TiDB + MySQL compatible) ---
+$sslEnabled = filter_var($config['DB_SSL'] ?? false, FILTER_VALIDATE_BOOLEAN);
+$sslCaPath  = (string)($config['DB_SSL_CA_PATH'] ?? '');
+
+// TiDB Cloud: SSL should be ON when using gateway host + port 4000
+// Local MySQL: SSL can be OFF
+$mysqli = mysqli_init();
+
+// If SSL is enabled, set SSL before connecting
+if ($sslEnabled) {
+  // If you provide a CA path, it will verify chain. If empty, it still uses SSL but may not verify.
+  mysqli_ssl_set($mysqli, null, null, $sslCaPath !== '' ? $sslCaPath : null, null, null);
+}
+
+$clientFlags = $sslEnabled ? MYSQLI_CLIENT_SSL : 0;
+
+$ok = mysqli_real_connect(
+  $mysqli,
+  (string)$config['DB_HOST'],
+  (string)$config['DB_USER'],
+  (string)$config['DB_PASS'],
+  (string)$config['DB_NAME'],
+  (int)$config['DB_PORT'],
+  null,
+  $clientFlags
 );
+
+if (!$ok) {
+  die('Database connection failed: ' . mysqli_connect_error());
+}
+
+$conn = $mysqli;
+mysqli_set_charset($conn, 'utf8mb4');
+
 
 if (!$conn) {
   die('Database connection failed: ' . mysqli_connect_error());
