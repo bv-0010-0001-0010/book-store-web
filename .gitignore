@@ -1,0 +1,17 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Env / secrets
+.env
+*.env
+config.local.php
+
+# Logs
+*.log
+
+# User uploads folder
+uploaded_img
+!uploaded_img/.gitkeep
