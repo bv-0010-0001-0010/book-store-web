@@ -1,14 +1,9 @@
 <?php
-if(isset($message)){
-   foreach($message as $message){
-      echo '
-      <div class="message">
-         <span>'.$message.'</span>
-         <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
-      </div>
-      ';
-   }
-}
+// This file expects config.php to already be required by the page.
+ensure_session_started();
+
+$admin_name  = $_SESSION['admin_name'] ?? 'Admin';
+$admin_email = $_SESSION['admin_email'] ?? '';
 ?>
 
 <header class="header">
@@ -31,10 +26,11 @@ if(isset($message)){
       </div>
 
       <div class="account-box">
-         <p>username : <span><?php echo $_SESSION['admin_name']; ?></span></p>
-         <p>email : <span><?php echo $_SESSION['admin_email']; ?></span></p>
+         <p>username : <span><?= e($admin_name) ?></span></p>
+         <?php if ($admin_email !== ''): ?>
+         <p>email : <span><?= e($admin_email) ?></span></p>
+         <?php endif; ?>
          <a href="logout.php" class="delete-btn">logout</a>
-         <div>new <a href="login.php">login</a> | <a href="register.php">register</a></div>
       </div>
 
    </div>

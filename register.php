@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+require 'config.php';
 ensure_session_started();
 csrf_validate_post();
 

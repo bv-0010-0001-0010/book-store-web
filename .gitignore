@@ -12,9 +12,7 @@ config.local.php
 # Logs
 *.log
 
-# User uploads folder
-uploaded_img
-!uploaded_img/.gitkeep
+
 
 # Certs / keys
 path/*.pem

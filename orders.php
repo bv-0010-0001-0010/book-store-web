@@ -1,13 +1,11 @@
 <?php
 
-include 'config.php';
+require 'config.php';
+ensure_session_started();
 
-session_start();
-
-$user_id = $_SESSION['user_id'];
-
-if(!isset($user_id)){
-   header('location:login.php');
+$user_id = $_SESSION['user_id'] ?? null;
+if (empty($user_id)) {
+   redirect('login.php');
 }
 
 ?>

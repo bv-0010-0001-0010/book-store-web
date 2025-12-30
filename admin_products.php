@@ -1,14 +1,12 @@
 <?php
 
-include 'config.php';
+require 'config.php';
+ensure_session_started();
 
-session_start();
-
-$admin_id = $_SESSION['admin_id'];
-
-if(!isset($admin_id)){
-   header('location:login.php');
-};
+$admin_id = $_SESSION['admin_id'] ?? null;
+if (empty($admin_id)) {
+   redirect('login.php');
+}
 
 if(isset($_POST['add_product'])){
 
